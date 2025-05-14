@@ -1,32 +1,27 @@
-import {TextField, Button, Box, Container} from "@mui/material";
-import { useState } from "react";
+import {TextField, Button, Box, Container, Typography} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
+import {login} from "../services/AuthServices";
+import { useState } from "react";
 
 const Login = ()=>{
 
     const navigate = useNavigate();
+    const [error, setError] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        console.log(formData.get('email'));
-        console.log(formData.get('password'));
-
-        let result = await axios.post(
-            'http://localhost:8080/api/v1/auth/login', 
-            {
-                email:formData.get('email'), 
-                password:formData.get('password')
-            }
-        );        
-        console.log(result.data.accessToken);
-        localStorage.setItem('token', result.data.accessToken);
-
-        navigate('/home');
-
-
+        try{
+            await login(
+                formData.get('email'), 
+                formData.get('password')
+            )
+            navigate('/home');
+        }catch(error){
+            console.log(error);
+            setError("Usuario o contraseña incorrecto");
+        }
+        
     }
 
     return (
@@ -51,6 +46,9 @@ const Login = ()=>{
                         type="submit">
                         Iniciar Sesion
                     </Button>
+                    <Typography variant="h6" component="h6" sx={{color:"#000"}}>
+                        {error}
+                    </Typography>
                 </Box>
             </Container>
 
