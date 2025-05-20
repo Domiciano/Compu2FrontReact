@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Dashboard from './pages/Dashboard'
 import StudentSection from "./sections/StudentSection";
 import CourseSection from "./sections/CourseSection";
+import ProtectedLayout from './components/ProtectedLayout';
 
 
 function App() {
@@ -13,7 +14,13 @@ function App() {
     <BrowserRouter>
       <Routes>
       <Route path="/" element={<Login />}></Route>
-      <Route path="/home" element={<Home />}></Route>
+
+      <Route path="/login" element={<Login />}></Route>
+
+      <Route element={<ProtectedLayout/>}>
+        <Route path="/home" element={<Home />}></Route>
+      </Route>
+      
       <Route path="/dashboard" element={<Dashboard />}>
         <Route path="" element={<StudentSection />}></Route>
         <Route path="students" element={<CourseSection />}></Route>

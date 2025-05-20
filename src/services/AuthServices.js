@@ -7,5 +7,21 @@ export const login = async (email, password) => {
         {email,password}
     );
     console.log(result.data.accessToken);
+    //TOKEN -> USER
     localStorage.setItem('token', result.data.accessToken);
+}
+
+export const getMyUser = async () => {
+    const token = localStorage.getItem('token');
+    let result = await axios.get(
+        `${URL_BASE}/api/v1/users/me`,
+        {
+            headers:{
+                'Authorization':`Bearer ${token}`
+            }
+        }
+    );
+    console.log(result.data);
+    localStorage.setItem('user', JSON.stringify(result.data));
+    return result.data;
 }

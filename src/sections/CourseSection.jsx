@@ -1,6 +1,12 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+
 const CourseSection = () => {
+    const {user} = useContext(UserContext);
     return (
-        <h1>Course Section</h1>
+        <>
+            {user && <h1>{user.email}</h1>}
+        </>
     );
 }
 

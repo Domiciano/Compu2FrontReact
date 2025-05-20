@@ -1,12 +1,14 @@
 import {TextField, Button, Box, Container, Typography} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import {login} from "../services/AuthServices";
-import { useState } from "react";
+import {getMyUser, login} from "../services/AuthServices";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Login = ()=>{
 
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const {setUser} = useContext(UserContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,6 +18,8 @@ const Login = ()=>{
                 formData.get('email'), 
                 formData.get('password')
             )
+            let user = await getMyUser();
+            setUser(user);
             navigate('/home');
         }catch(error){
             console.log(error);
